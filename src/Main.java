@@ -24,11 +24,13 @@ public class Main {
         
         Node stateAwal = new Node(arrPerson, new Person[0], 0,0);
         
+        //System.out.println("Kanan" + stateAwal.getDiKanan());
+        
         AI ai = new AI(stateAwal);
         
         ai.doABintang();
         
-        System.out.println(stateAwal);
+        //System.out.println(stateAwal);
         
     }
 }

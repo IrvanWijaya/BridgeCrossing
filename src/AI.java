@@ -30,7 +30,7 @@ public class AI {
         Node temp = pqNode.poll();
         System.out.println("aa");
         /*
-        while(temp.getDiKiri() != 0){
+        while(temp.getDiKiriLength() != 0){
             if(temp.getWaktu() < pqNode.peek().getWaktu()){
                 
             }

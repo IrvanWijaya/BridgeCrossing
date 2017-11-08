@@ -22,11 +22,19 @@ public class Node implements Comparable<Node> {
         this.waktu = waktu;
     }
 
-    public int getDiKiri() {
+    public Person[] getDiKiri() {
+        return diKiri;
+    }
+
+    public Person[] getDiKanan() {
+        return diKanan;
+    }
+    
+    public int getDiKiriLength() {
         return diKiri.length;
     }
 
-    public int getDiKanan() {
+    public int getDiKananLength() {
         return diKanan.length;
     }
 
