@@ -18,11 +18,19 @@ public class Main {
         int nOrang = sc.nextInt();
         Person arrPerson[] = new Person[nOrang];
         
+        Node stateAwal = new Node(nOrang, 0, 0,0);
+        
         for (int i = 0; i < nOrang; i++) {
             arrPerson[i] = new Person(sc.nextInt(), i+1);
+            stateAwal.pushKiri(arrPerson[i]);
         }
         
-        Node stateAwal = new Node(arrPerson, new Person[0], 0,0);
+        Person a = new Person(10, 10);
+        Person b = a;
+        
+        if(b == a){
+            
+        }
         
         //System.out.println("Kanan" + stateAwal.getDiKanan());
         

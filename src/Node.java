@@ -14,14 +14,27 @@ public class Node implements Comparable<Node> {
     private Person[] diKanan;
     private int indexParent;
     private int waktu;
+    
+    private int iKiri = 0 ,iKanan = 0;
 
-    public Node(Person[] kiri, Person[] kanan, int index, int waktu){
-        this.diKiri = kiri;
-        this.diKanan = kanan;
+    public Node(int kiri, int kanan, int index, int waktu){
+        this.diKiri = new Person[kiri];
+        this.diKanan = new Person[kanan];
         this.indexParent = index;
         this.waktu = waktu;
     }
-
+    
+    
+    public void pushKanan(Person p){
+        this.diKanan[this.iKanan] = p;
+        this.iKanan++;
+    }
+    
+    public void pushKiri(Person p){
+        this.diKiri[this.iKiri] = p;
+        this.iKiri++;
+    }
+    
     public Person[] getDiKiri() {
         return diKiri;
     }
@@ -58,5 +71,4 @@ public class Node implements Comparable<Node> {
     public int compareTo(Node other) {
         return this.waktu - other.waktu;
     }
-    
 }
