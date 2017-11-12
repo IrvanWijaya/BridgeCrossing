@@ -19,98 +19,116 @@ public class AI {
     private PriorityQueue<Node> pqNode;
     private Node temp;
     private int[] combTemp;
-    private Person[] tempPerson;
+    private Person[] tempPersonKiri;
+    private Person[] tempPersonKanan;
 
     private int hn = 0;
-    private int idxParent = 0;
+    //private int idxParent = 0;
     private int jatahKiri = 0, jatahKanan = 0;
 
     public AI(Node stateAwal) {
         this.parent = new ArrayList<Node>();
-        this.parent.add(stateAwal);
+        //this.parent.add(stateAwal);
         pqNode = new PriorityQueue<Node>();
         pqNode.add(stateAwal);
     }
 
     public int doABintang() {
         int i = 0;
-        boolean lvlGenap = false;
         //Initialize
-        this.process(i, lvlGenap);
-        lvlGenap = !lvlGenap;
+        this.temp = this.pqNode.poll();
+        this.process(i);
+       
         /*
         while (!pqNode.isEmpty()) {
             temp = pqNode.poll();
             System.out.println(temp.getWaktu());
         }*/
         while (!pqNode.isEmpty()) {
-            temp = pqNode.poll();
-            if(temp.getDiKiriLength() == 0 && temp.getWaktu() < pqNode.peek().getWaktu()){
+            this.temp = this.pqNode.poll();
+            if(this.temp.getDiKiriLength() == 0 && this.temp.getWaktu() <= this.pqNode.peek().getWaktu()){
                 break;
             }
-            this.process(i, lvlGenap);
-            lvlGenap = !lvlGenap;
-            //System.out.println(temp.getWaktu());
+            //System.out.println(this.temp.getWaktu());
+            this.process(i);
         }
         
-        System.out.println(temp.getWaktu());
+        while(temp.getParent() != null){
+            parent.add(temp);
+            temp = temp.getParent();
+        }
+        parent.add(temp);
+        
+        System.out.println(parent.get(0).getWaktu());
 
-        /*
-        while(temp.getDiKiriLength() != 0){
-            if(temp.getWaktu() < pqNode.peek().getWaktu()){
-                
-            }
-            
-        }*/
         return 0;
     }
 
-    private void process(int i, boolean lvlGenap) {
-
-        if (lvlGenap) {
-            this.temp = pqNode.poll();
-            this.tempPerson = this.temp.getDiKanan();
-            this.combTemp = new int[temp.getDiKananLength()];
-            for (i = 0; i < this.combTemp.length; i++) {
-                this.combTemp[i] = i;
+    private void process(int i) {
+        if (!temp.getPosisiSenter()) {
+            this.tempPersonKanan = this.temp.getDiKanan();
+            this.tempPersonKiri = this.temp.getDiKiri();
+            this.jatahKiri = this.temp.getDiKiriLength() + 1;
+            this.jatahKanan = this.temp.getDiKananLength() - 1;
+            int j;
+            Node newNode;
+            for(i = 0; i < this.tempPersonKanan.length; i++){
+                newNode = new Node(this.jatahKiri, this.jatahKanan, this.temp, 0, true);
+                
+                for(j =0; j < this.tempPersonKiri.length; j++){
+                    newNode.pushKiri(this.tempPersonKiri[j]);
+                }
+                
+                for(j =0; j < this.tempPersonKanan.length; j++){
+                    if(j  == i){
+                        newNode.pushKiri(this.tempPersonKanan[j]);
+                        newNode.setWaktu(this.temp.getWaktu() + this.tempPersonKanan[j].getSpeed());
+                    }else{
+                        newNode.pushKanan(this.tempPersonKanan[j]);
+                    }
+                }
+                this.pqNode.add(newNode);
             }
-            this.jatahKiri = this.combTemp.length - 2;
-            this.jatahKanan += 2;
-            combinations(this.combTemp, 2, 0, new int[2], 1);
-            this.idxParent++;
+            //this.idxParent++;
         } else {
-            this.temp = pqNode.poll();
-            this.tempPerson = this.temp.getDiKiri();
+            this.tempPersonKiri = this.temp.getDiKiri();
+            this.tempPersonKanan = this.temp.getDiKanan();
             this.combTemp = new int[temp.getDiKiriLength()];
             for (i = 0; i < this.combTemp.length; i++) {
                 this.combTemp[i] = i;
             }
-            this.jatahKiri = this.combTemp.length - 2;
-            this.jatahKanan += 2;
+            this.jatahKiri = this.temp.getDiKiriLength() - 2;
+            this.jatahKanan = this.temp.getDiKananLength() + 2;
             combinations(this.combTemp, 2, 0, new int[2], 1);
-            this.idxParent++;
+            //System.out.println("--------------");
+            //this.idxParent++;
         }
     }
 
     private void combinations(int[] arr, int len, int startPosition, int[] result, int banyakPindah) {
         if (len == 0) {
-            System.out.println(Arrays.toString(result));
-            Node newNode = new Node(this.jatahKiri, this.jatahKanan, this.idxParent, 0);
+            //System.out.println(Arrays.toString(result));
+            Node newNode = new Node(this.jatahKiri, this.jatahKanan, this.temp, 0, false);
             int iRes = 0;
             int waktu = 0;
-            for (int i = 0; i < arr.length; i++) {
+            int i;
+            for(i =0; i < tempPersonKanan.length; i++){
+                newNode.pushKanan(tempPersonKanan[i]);
+            }
+            for (i = 0; i < arr.length; i++) {
                 if (i == result[iRes]) {
-                    newNode.pushKanan(tempPerson[i]);
-                    if (tempPerson[i].getSpeed() + this.hn > waktu + this.hn) {
-                        waktu = tempPerson[i].getSpeed() + this.hn;
+                    newNode.pushKanan(tempPersonKiri[i]);
+                    if (tempPersonKiri[i].getSpeed() > waktu) {
+                        waktu = tempPersonKiri[i].getSpeed();
                     }
                     if (iRes < banyakPindah) {
                         iRes++;
                     }
                 } else {
-                    newNode.pushKiri(tempPerson[i]);
+                    newNode.pushKiri(tempPersonKiri[i]);
                 }
             }
+            waktu += temp.getWaktu();
             newNode.setWaktu(waktu);
             this.pqNode.add(newNode);
         } else {

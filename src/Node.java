@@ -12,16 +12,18 @@
 public class Node implements Comparable<Node> {
     private Person[] diKiri;
     private Person[] diKanan;
-    private int indexParent;
+    private Node nodeParent;
     private int waktu;
+    private boolean senterDiKiri;
     
     private int iKiri = 0 ,iKanan = 0;
 
-    public Node(int kiri, int kanan, int index, int waktu){
+    public Node(int kiri, int kanan, Node parent, int waktu, boolean senter){
         this.diKiri = new Person[kiri];
         this.diKanan = new Person[kanan];
-        this.indexParent = index;
+        this.nodeParent = parent;
         this.waktu = waktu;
+        this.senterDiKiri = senter;
     }
     
     
@@ -50,13 +52,9 @@ public class Node implements Comparable<Node> {
     public int getDiKananLength() {
         return diKanan.length;
     }
-
-    public void setIndex(int index) {
-        this.indexParent = index;
-    }
-
-    public int getIndex() {
-        return indexParent;
+    
+    public Node getParent(){
+        return this.nodeParent;
     }
     
     public void setWaktu(int waktu) {
@@ -65,6 +63,10 @@ public class Node implements Comparable<Node> {
 
     public int getWaktu() {
         return waktu;
+    }
+    
+    public boolean getPosisiSenter(){
+        return this.senterDiKiri;
     }
 
     @Override
