@@ -21,8 +21,8 @@ public class AI {
     private int[] combTemp;
     private Person[] tempPersonKiri;
     private Person[] tempPersonKanan;
-
-    private int hn = 0;
+    
+    private int expandedNode = 0;
     //private int idxParent = 0;
     private int jatahKiri = 0, jatahKanan = 0;
 
@@ -59,6 +59,7 @@ public class AI {
         }
         parent.add(temp);
         
+        System.out.println("Expanded Node = " + expandedNode);
         System.out.println(parent.get(0).getWaktu());
 
         return 0;
@@ -88,6 +89,7 @@ public class AI {
                     }
                 }
                 this.pqNode.add(newNode);
+                expandedNode++;
             }
             //this.idxParent++;
         } else {
@@ -131,6 +133,7 @@ public class AI {
             waktu += temp.getWaktu();
             newNode.setWaktu(waktu);
             this.pqNode.add(newNode);
+            expandedNode++;
         } else {
             for (int i = startPosition; i <= arr.length - len; i++) {
                 result[result.length - len] = arr[i];
