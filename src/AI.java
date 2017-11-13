@@ -26,6 +26,7 @@ public class AI {
     //private int idxParent = 0;
     private int jatahKiri = 0, jatahKanan = 0;
 
+    private int nodeExpanded;
     public AI(Node stateAwal) {
         this.parent = new ArrayList<Node>();
         //this.parent.add(stateAwal);
@@ -33,7 +34,7 @@ public class AI {
         pqNode.add(stateAwal);
     }
 
-    public int doABintang() {
+    public List<Node> doABintang() {
         int i = 0;
         //Initialize
         this.temp = this.pqNode.poll();
@@ -53,15 +54,16 @@ public class AI {
             this.process(i);
         }
         
+        
         while(temp.getParent() != null){
             parent.add(temp);
             temp = temp.getParent();
         }
         parent.add(temp);
         
-        System.out.println(parent.get(0).getWaktu());
+        System.out.println("Node expanded = " + nodeExpanded + "\nWaktu minimal = " + parent.get(0).getWaktu());
 
-        return 0;
+        return this.parent;
     }
 
     private void process(int i) {
@@ -71,6 +73,7 @@ public class AI {
             this.jatahKiri = this.temp.getDiKiriLength() + 1;
             this.jatahKanan = this.temp.getDiKananLength() - 1;
             int j;
+            int waktu = 0;
             Node newNode;
             for(i = 0; i < this.tempPersonKanan.length; i++){
                 newNode = new Node(this.jatahKiri, this.jatahKanan, this.temp, 0, true);
@@ -82,12 +85,16 @@ public class AI {
                 for(j =0; j < this.tempPersonKanan.length; j++){
                     if(j  == i){
                         newNode.pushKiri(this.tempPersonKanan[j]);
-                        newNode.setWaktu(this.temp.getWaktu() + this.tempPersonKanan[j].getSpeed());
+                        waktu = this.temp.getWaktu() + this.tempPersonKanan[j].getSpeed();
+                        newNode.setWaktu(waktu);
                     }else{
                         newNode.pushKanan(this.tempPersonKanan[j]);
                     }
                 }
+                
+                newNode.setHnPlusGnVal(waktu);
                 this.pqNode.add(newNode);
+                nodeExpanded++;
             }
             //this.idxParent++;
         } else {
@@ -129,7 +136,9 @@ public class AI {
                 }
             }
             waktu += temp.getWaktu();
+            newNode.setHnPlusGnVal(waktu);
             newNode.setWaktu(waktu);
+            nodeExpanded++;
             this.pqNode.add(newNode);
         } else {
             for (int i = startPosition; i <= arr.length - len; i++) {

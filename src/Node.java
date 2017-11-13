@@ -15,6 +15,7 @@ public class Node implements Comparable<Node> {
     private Node nodeParent;
     private int waktu;
     private boolean senterDiKiri;
+    private int hnPlusGn;
     
     private int iKiri = 0 ,iKanan = 0;
 
@@ -68,9 +69,20 @@ public class Node implements Comparable<Node> {
     public boolean getPosisiSenter(){
         return this.senterDiKiri;
     }
+    
+    public void setHnPlusGnVal(int cost){
+        int res = 0;
+        /*
+        for(int i =0; i < this.getDiKiriLength(); i++){
+            res += this.diKiri[i].getSpeed();
+        }
+        this.hnPlusGn = res + cost;*/
+        this.hnPlusGn = cost + this.getDiKiriLength() - this.getDiKananLength();
+    }
 
     @Override
     public int compareTo(Node other) {
+        //return this.hnPlusGn - other.hnPlusGn;
         return this.waktu - other.waktu;
     }
 }

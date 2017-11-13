@@ -1,0 +1,25 @@
+Orang ke :1 membutuhkan waktu 1 detik untuk menyebrang.
+Orang ke :2 membutuhkan waktu 10 detik untuk menyebrang.
+Orang ke :3 membutuhkan waktu 2 detik untuk menyebrang.
+Orang ke :4 membutuhkan waktu 5 detik untuk menyebrang.
+
+'x-x' menandakan jembatan, x(y) y adalah waktu yang dibutuhkan orang x menyebrangi jembatan.
+Urutan menyebrang adalah :
+
+Waktu = 0
+1(1),2(10),3(2),4(5)  x-x  
+
+Waktu = 2
+2(10),4(5)  x-x  1(1),3(2)
+
+Waktu = 3
+2(10),4(5),1(1)  x-x  3(2)
+
+Waktu = 13
+1(1)  x-x  3(2),2(10),4(5)
+
+Waktu = 15
+1(1),3(2)  x-x  2(10),4(5)
+
+Waktu = 17
+  x-x  2(10),4(5),1(1),3(2)
