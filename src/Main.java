@@ -30,11 +30,18 @@ public class Main {
         Node stateAwal = new Node(nOrang, 0, null, 0, true);
 
         int i;
+        int fast = Integer.MAX_VALUE,slow = Integer.MIN_VALUE;
         for (i = 0; i < nOrang; i++) {
             arrPerson[i] = new Person(Integer.parseInt(br.readLine()), i + 1);
             stateAwal.pushKiri(arrPerson[i]);
+            if(arrPerson[i].getSpeed() < fast){
+                fast = arrPerson[i].getSpeed();
+            }
+            if(arrPerson[i].getSpeed() > slow){
+                slow = arrPerson[i].getSpeed();
+            }
         }
-        AI ai = new AI(stateAwal);
+        AI ai = new AI(stateAwal,fast,slow);
 
         List<Node> res = ai.doABintang();
 

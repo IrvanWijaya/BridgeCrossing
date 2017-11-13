@@ -21,17 +21,20 @@ public class AI {
     private int[] combTemp;
     private Person[] tempPersonKiri;
     private Person[] tempPersonKanan;
+    private int fastestPerson,slowestPerson;
 
     private int hn = 0;
     //private int idxParent = 0;
     private int jatahKiri = 0, jatahKanan = 0;
 
     private int nodeExpanded;
-    public AI(Node stateAwal) {
+    public AI(Node stateAwal, int fast, int slow) {
         this.parent = new ArrayList<Node>();
         //this.parent.add(stateAwal);
         pqNode = new PriorityQueue<Node>();
         pqNode.add(stateAwal);
+        this.fastestPerson = fast;
+        this.slowestPerson = slow;
     }
 
     public List<Node> doABintang() {
@@ -92,7 +95,7 @@ public class AI {
                     }
                 }
                 
-                newNode.setHnPlusGnVal(waktu);
+                newNode.setHnPlusGnVal(waktu,this.fastestPerson, true);
                 this.pqNode.add(newNode);
                 nodeExpanded++;
             }
@@ -136,7 +139,7 @@ public class AI {
                 }
             }
             waktu += temp.getWaktu();
-            newNode.setHnPlusGnVal(waktu);
+            newNode.setHnPlusGnVal(waktu,this.fastestPerson,false);
             newNode.setWaktu(waktu);
             nodeExpanded++;
             this.pqNode.add(newNode);

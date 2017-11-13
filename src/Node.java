@@ -8,36 +8,35 @@
  *
  * @author Irvan
  */
-
 public class Node implements Comparable<Node> {
+
     private Person[] diKiri;
     private Person[] diKanan;
     private Node nodeParent;
     private int waktu;
     private boolean senterDiKiri;
     private int hnPlusGn;
-    
-    private int iKiri = 0 ,iKanan = 0;
 
-    public Node(int kiri, int kanan, Node parent, int waktu, boolean senter){
+    private int iKiri = 0, iKanan = 0;
+
+    public Node(int kiri, int kanan, Node parent, int waktu, boolean senter) {
         this.diKiri = new Person[kiri];
         this.diKanan = new Person[kanan];
         this.nodeParent = parent;
         this.waktu = waktu;
         this.senterDiKiri = senter;
     }
-    
-    
-    public void pushKanan(Person p){
+
+    public void pushKanan(Person p) {
         this.diKanan[this.iKanan] = p;
         this.iKanan++;
     }
-    
-    public void pushKiri(Person p){
+
+    public void pushKiri(Person p) {
         this.diKiri[this.iKiri] = p;
         this.iKiri++;
     }
-    
+
     public Person[] getDiKiri() {
         return diKiri;
     }
@@ -45,7 +44,7 @@ public class Node implements Comparable<Node> {
     public Person[] getDiKanan() {
         return diKanan;
     }
-    
+
     public int getDiKiriLength() {
         return diKiri.length;
     }
@@ -53,11 +52,11 @@ public class Node implements Comparable<Node> {
     public int getDiKananLength() {
         return diKanan.length;
     }
-    
-    public Node getParent(){
+
+    public Node getParent() {
         return this.nodeParent;
     }
-    
+
     public void setWaktu(int waktu) {
         this.waktu = waktu;
     }
@@ -65,24 +64,30 @@ public class Node implements Comparable<Node> {
     public int getWaktu() {
         return waktu;
     }
-    
-    public boolean getPosisiSenter(){
+
+    public boolean getPosisiSenter() {
         return this.senterDiKiri;
     }
-    
-    public void setHnPlusGnVal(int cost){
+
+    public void setHnPlusGnVal(int cost, int fastestPerson, boolean left) {
         int res = 0;
-        /*
-        for(int i =0; i < this.getDiKiriLength(); i++){
-            res += this.diKiri[i].getSpeed();
+
+        if (left) {
+            this.hnPlusGn = cost + (cost - fastestPerson);
+        } else {
+            for (int i = 0; i < this.getDiKiriLength(); i++) {
+                res += this.diKiri[i].getSpeed();
+            }
+            this.hnPlusGn = cost + res;
         }
-        this.hnPlusGn = res + cost;*/
-        this.hnPlusGn = cost + this.getDiKiriLength() - this.getDiKananLength();
+
+        this.hnPlusGn = res + cost;
+        //this.hnPlusGn = cost + this.getDiKiriLength() - this.getDiKananLength();
     }
 
     @Override
     public int compareTo(Node other) {
-        //return this.hnPlusGn - other.hnPlusGn;
-        return this.waktu - other.waktu;
+        return this.hnPlusGn - other.hnPlusGn;
+        //return this.waktu - other.waktu;
     }
 }
