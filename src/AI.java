@@ -21,13 +21,14 @@ public class AI {
     private int[] combTemp;
     private Person[] tempPersonKiri;
     private Person[] tempPersonKanan;
-    private int fastestPerson,slowestPerson;
+    private int fastestPerson, slowestPerson;
 
     private int hn = 0;
     //private int idxParent = 0;
     private int jatahKiri = 0, jatahKanan = 0;
 
     private int nodeExpanded;
+
     public AI(Node stateAwal, int fast, int slow) {
         this.parent = new ArrayList<Node>();
         //this.parent.add(stateAwal);
@@ -42,7 +43,7 @@ public class AI {
         //Initialize
         this.temp = this.pqNode.poll();
         this.process(i);
-       
+
         /*
         while (!pqNode.isEmpty()) {
             temp = pqNode.poll();
@@ -50,22 +51,20 @@ public class AI {
         }*/
         while (!pqNode.isEmpty()) {
             this.temp = this.pqNode.poll();
-            if(this.temp.getDiKiriLength() == 0 && this.temp.getWaktu() <= this.pqNode.peek().getWaktu()){
+            if (this.temp.getDiKiriLength() == 0 && this.temp.getWaktu() <= this.pqNode.peek().getWaktu()) {
                 break;
             }
             //System.out.println(this.temp.getWaktu());
             this.process(i);
         }
-        
-        
-        while(temp.getParent() != null){
+
+        while (temp.getParent() != null) {
             parent.add(temp);
             temp = temp.getParent();
         }
         parent.add(temp);
-        
-        System.out.println("Node expanded = " + nodeExpanded + "\nWaktu minimal = " + parent.get(0).getWaktu());
 
+        System.out.println("Node expanded = " + nodeExpanded + "\nWaktu minimal = " + parent.get(0).getWaktu());
         return this.parent;
     }
 
@@ -78,24 +77,24 @@ public class AI {
             int j;
             int waktu = 0;
             Node newNode;
-            for(i = 0; i < this.tempPersonKanan.length; i++){
+            for (i = 0; i < this.tempPersonKanan.length; i++) {
                 newNode = new Node(this.jatahKiri, this.jatahKanan, this.temp, 0, true);
-                
-                for(j =0; j < this.tempPersonKiri.length; j++){
+
+                for (j = 0; j < this.tempPersonKiri.length; j++) {
                     newNode.pushKiri(this.tempPersonKiri[j]);
                 }
-                
-                for(j =0; j < this.tempPersonKanan.length; j++){
-                    if(j  == i){
+
+                for (j = 0; j < this.tempPersonKanan.length; j++) {
+                    if (j == i) {
                         newNode.pushKiri(this.tempPersonKanan[j]);
                         waktu = this.temp.getWaktu() + this.tempPersonKanan[j].getSpeed();
                         newNode.setWaktu(waktu);
-                    }else{
+                    } else {
                         newNode.pushKanan(this.tempPersonKanan[j]);
                     }
                 }
-                
-                newNode.setHnPlusGnVal(waktu,this.fastestPerson, true);
+
+                newNode.setHnPlusGnVal(waktu, this.fastestPerson, true);
                 this.pqNode.add(newNode);
                 nodeExpanded++;
             }
@@ -122,7 +121,7 @@ public class AI {
             int iRes = 0;
             int waktu = 0;
             int i;
-            for(i =0; i < tempPersonKanan.length; i++){
+            for (i = 0; i < tempPersonKanan.length; i++) {
                 newNode.pushKanan(tempPersonKanan[i]);
             }
             for (i = 0; i < arr.length; i++) {
@@ -139,7 +138,7 @@ public class AI {
                 }
             }
             waktu += temp.getWaktu();
-            newNode.setHnPlusGnVal(waktu,this.fastestPerson,false);
+            newNode.setHnPlusGnVal(waktu, this.fastestPerson, false);
             newNode.setWaktu(waktu);
             nodeExpanded++;
             this.pqNode.add(newNode);
