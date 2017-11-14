@@ -29,21 +29,18 @@ public class Main {
 
         Node stateAwal = new Node(nOrang, 0, null, 0, true);
 
-        int i;
-        int fast = Integer.MAX_VALUE,slow = Integer.MIN_VALUE;
+        int i, j;
+        int fast = Integer.MAX_VALUE, slow = Integer.MIN_VALUE;
         for (i = 0; i < nOrang; i++) {
             arrPerson[i] = new Person(Integer.parseInt(br.readLine()), i + 1);
             stateAwal.pushKiri(arrPerson[i]);
-            if(arrPerson[i].getSpeed() < fast){
+            if (arrPerson[i].getSpeed() < fast) {
                 fast = arrPerson[i].getSpeed();
             }
-            if(arrPerson[i].getSpeed() > slow){
+            if (arrPerson[i].getSpeed() > slow) {
                 slow = arrPerson[i].getSpeed();
             }
         }
-        AI ai = new AI(stateAwal,fast,slow);
-
-        List<Node> res = ai.doABintang();
 
         for (i = 0; i < nOrang; i++) {
             bw.write("Orang ke :" + arrPerson[i].getId() + " membutuhkan waktu " + arrPerson[i].getSpeed() + " detik untuk menyebrang.");
@@ -54,28 +51,65 @@ public class Main {
         bw.write("'x-x' menandakan jembatan, x(y) y adalah waktu yang dibutuhkan orang x menyebrangi jembatan.\r\nUrutan menyebrang adalah :");
         bw.newLine();
 
-        Person[] temp;
-        int j;
-        for (i = res.size() - 1; i >= 0; i--){
-            bw.newLine();
-            bw.write("Waktu = " + res.get(i).getWaktu());
-            bw.newLine();
-            temp = res.get(i).getDiKiri();
-            for (j = 0; j < temp.length; j++) {
-                bw.write(temp[j].getId() + "(" + temp[j].getSpeed() + ")");
-                if (j != temp.length - 1) {
-                    bw.write(",");
+        if (nOrang == 0) {
+            bw.write("Waktu = 0\r\nTidak ada Orang");
+        } else if (nOrang < 3) {
+
+            for (i = 0; i < 2; i++) {
+                if (i == 0) {
+                    bw.newLine();
+                    bw.write("Waktu = 0");
+                    bw.newLine();
+                    for (j = 0; j < arrPerson.length; j++) {
+                        bw.write(arrPerson[j].getId() + "(" + arrPerson[j].getSpeed() + ")");
+                        if (j != arrPerson.length - 1) {
+                            bw.write(",");
+                        }
+                    }
+                    bw.write("  x-x  ");
+                    bw.newLine();
+                } else {
+                    bw.newLine();
+                    bw.write("Waktu = " + slow);
+                    bw.newLine();
+                    bw.write("  x-x  ");
+                    for (j = 0; j < arrPerson.length; j++) {
+                        bw.write(arrPerson[j].getId() + "(" + arrPerson[j].getSpeed() + ")");
+                        if (j != arrPerson.length - 1) {
+                            bw.write(",");
+                        }
+                    }
+                    bw.newLine();
                 }
             }
-            bw.write("  x-x  ");
-            temp = res.get(i).getDiKanan();
-            for (j = 0; j < temp.length; j++) {
-                bw.write(temp[j].getId() + "(" + temp[j].getSpeed() + ")");
-                if (j != temp.length - 1) {
-                    bw.write(",");
+        } else {
+            AI ai = new AI(stateAwal, fast, slow);
+
+            List<Node> res = ai.doABintang();
+
+            Person[] temp;
+
+            for (i = res.size() - 1; i >= 0; i--) {
+                bw.newLine();
+                bw.write("Waktu = " + res.get(i).getWaktu());
+                bw.newLine();
+                temp = res.get(i).getDiKiri();
+                for (j = 0; j < temp.length; j++) {
+                    bw.write(temp[j].getId() + "(" + temp[j].getSpeed() + ")");
+                    if (j != temp.length - 1) {
+                        bw.write(",");
+                    }
                 }
+                bw.write("  x-x  ");
+                temp = res.get(i).getDiKanan();
+                for (j = 0; j < temp.length; j++) {
+                    bw.write(temp[j].getId() + "(" + temp[j].getSpeed() + ")");
+                    if (j != temp.length - 1) {
+                        bw.write(",");
+                    }
+                }
+                bw.newLine();
             }
-            bw.newLine();
         }
 
         if (bw != null) {

@@ -71,9 +71,10 @@ public class Node implements Comparable<Node> {
 
     public void setHnPlusGnVal(int cost, int fastestPerson, boolean left) {
         int res = 0;
-
+        //System.out.println(fastestPerson);
         if (left) {
-            this.hnPlusGn = cost + (cost - fastestPerson);
+            //this.hnPlusGn = cost + (cost - fastestPerson);
+            this.hnPlusGn = cost;
         } else {
             for (int i = 0; i < this.getDiKiriLength(); i++) {
                 res += this.diKiri[i].getSpeed();
@@ -81,7 +82,7 @@ public class Node implements Comparable<Node> {
             this.hnPlusGn = cost + res;
         }
 
-        this.hnPlusGn = res + cost;
+       
         //this.hnPlusGn = cost + this.getDiKiriLength() - this.getDiKananLength();
     }
 

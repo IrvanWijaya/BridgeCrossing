@@ -94,7 +94,7 @@ public class AI {
                     }
                 }
 
-                newNode.setHnPlusGnVal(waktu, this.fastestPerson, true);
+                newNode.setHnPlusGnVal(waktu, this.slowestPerson, true);
                 this.pqNode.add(newNode);
                 nodeExpanded++;
             }
